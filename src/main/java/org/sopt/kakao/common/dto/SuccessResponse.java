@@ -1,7 +1,10 @@
 package org.sopt.kakao.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.http.HttpStatus;
 
+@JsonInclude(Include.NON_NULL)
 public record SuccessResponse<T>(
         int status,
         T data
