@@ -40,8 +40,6 @@ public class Webtoon {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String image;
 
-    private boolean isFree;
-
     private int coupon;
 
     private String promotion;
