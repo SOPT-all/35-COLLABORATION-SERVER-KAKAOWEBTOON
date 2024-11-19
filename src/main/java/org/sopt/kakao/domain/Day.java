@@ -6,11 +6,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum Day {
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY,
-    SUNDAY
+    MON,
+    TUE,
+    WED,
+    THU,
+    FRI,
+    SAT,
+    SUN
 }
