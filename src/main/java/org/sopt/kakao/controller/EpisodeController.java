@@ -24,7 +24,7 @@ public class EpisodeController {
 
     @GetMapping("/episodes/{id}")
     public ResponseEntity<SuccessResponse> getDetailEpisode(
-            @PathVariable @Min(value = 1, message = "ID는 1 이상이어야 합니다.") final long id // 커스텀 메시지 추가
+            @PathVariable @Min(value = 1L, message = "ID는 1 이상이어야 합니다.") final long id // 커스텀 메시지 추가
     ) {
         EpisodeDetailResponse episode = episodeService.getDetail(id);
         return ResponseEntity.ok(SuccessResponse.of(episode));
