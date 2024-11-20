@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(AppException.class)
+    @ExceptionHandler(AppException.class) // AppException 처리
     public ResponseEntity<ErrorResponse> handleAppException(AppException appException) {
         log.error("AppException occurred: {}", appException.getMessage(), appException);
         ErrorMessage errorMessage = appException.getErrorMessage();
@@ -33,12 +33,21 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), errorMessage));
     }
 
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public ResponseEntity<ErrorResponse> handleGenericException(ConstraintViolationException e) {
+//        log.warn("ConstraintViolationException occurred: {}", e.getMessage(), e);
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+//    }
+
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(ConstraintViolationException e) {
-        log.warn("ConstraintViolationException occurred: {}", e.getMessage(), e);
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+        log.warn("Validation failed: {}", e.getMessage(), e);
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+                .body(ErrorResponse.of(ErrorMessage.CONSTRAINT_VIOLATION));
     }
+
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
@@ -48,11 +57,12 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), e.getParameterName()));
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class) // 모든 예외처리
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception e) {
         log.error("Unexpected exception occurred: {}", e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
+
 
 }
