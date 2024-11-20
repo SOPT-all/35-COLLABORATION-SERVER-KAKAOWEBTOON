@@ -33,19 +33,11 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), errorMessage));
     }
 
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    public ResponseEntity<ErrorResponse> handleGenericException(ConstraintViolationException e) {
-//        log.warn("ConstraintViolationException occurred: {}", e.getMessage(), e);
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
-//    }
-
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
-        log.warn("Validation failed: {}", e.getMessage(), e);
-
+    public ResponseEntity<ErrorResponse> handleGenericException(ConstraintViolationException e) {
+        log.warn("ConstraintViolationException occurred: {}", e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of(ErrorMessage.CONSTRAINT_VIOLATION));
+                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
     }
 
 
