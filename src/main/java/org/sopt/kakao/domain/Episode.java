@@ -35,8 +35,6 @@ public class Episode {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String image;
 
-    private boolean isFree;
-
     private int status;
 
     public int findDayUntilFree(final LocalDate now) {
