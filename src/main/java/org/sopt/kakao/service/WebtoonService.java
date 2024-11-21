@@ -2,6 +2,7 @@ package org.sopt.kakao.service;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -45,12 +46,9 @@ public class WebtoonService {
     }
 
 
-    private String findThumbnail(final Webtoon webtoon) {
+    private Optional<Thumbnail> findThumbnail(final Webtoon webtoon) {
         List<Thumbnail> thumbnail = thumbnailRepository.findByWebtoon(webtoon);
-        return thumbnail.stream()
-                .map(t -> t.getImage())
-                .findFirst()
-                .orElseThrow(() -> new AppException(THUMNAIL_NOT_FOUND));
+        return thumbnail.stream().findFirst();
     }
 
 }
