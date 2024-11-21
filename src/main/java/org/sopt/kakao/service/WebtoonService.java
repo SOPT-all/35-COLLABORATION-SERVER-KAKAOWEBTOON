@@ -32,7 +32,7 @@ public class WebtoonService {
 
 
     public WebtoonDayListResponse findWebtoonsByDay(final String dayString) {
-        Day day = Day.fromString(dayString);
+        Day day = Day.convertToDay(dayString);
         List<WebtoonDayResponse> webtoons = webtoonRepository.findByDay(day).stream()
                 .map(WebtoonDayResponse::of)
                 .toList();

@@ -11,19 +11,19 @@ import java.util.Arrays;
 @Getter
 @RequiredArgsConstructor
 public enum Day {
-    MON("MON"),
-    TUE("TUE"),
-    WED("WED"),
-    THU("THU"),
-    FRI("FRI"),
-    SAT("SAT"),
-    SUN("SUN");
+    MON("mon"),
+    TUE("tue"),
+    WED("wed"),
+    THU("thu"),
+    FRI("fri"),
+    SAT("sat"),
+    SUN("sun");
 
     private final String day;
 
-    public static Day fromString(String dayString) {
+    public static Day convertToDay(String dayString) {
         return Arrays.stream(values())
-                .filter(day -> day.day.equalsIgnoreCase(dayString))
+                .filter(day -> day.day.equals(dayString))
                 .findFirst()
                 .orElseThrow(() -> new AppException(ErrorMessage.INVALID_DAY));
     }
