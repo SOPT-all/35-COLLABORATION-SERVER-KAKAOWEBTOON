@@ -3,7 +3,7 @@ package org.sopt.kakao.service.dto;
 import org.sopt.kakao.domain.Webtoon;
 
 public record WebtoonDayResponse(
-        Long id,
+        long id,
         String title,
         String image
 ) {
