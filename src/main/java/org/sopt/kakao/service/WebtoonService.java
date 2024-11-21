@@ -1,9 +1,17 @@
 package org.sopt.kakao.service;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
+import org.sopt.kakao.common.dto.ErrorMessage;
+import org.sopt.kakao.common.exception.AppException;
+import org.sopt.kakao.domain.Day;
 import org.sopt.kakao.domain.Webtoon;
 import org.sopt.kakao.repository.WebtoonRepository;
+import org.sopt.kakao.service.dto.WebtoonDayListResponse;
+import org.sopt.kakao.service.dto.WebtoonDayResponse;
 import org.sopt.kakao.service.dto.WebtoonListResponse;
 import org.sopt.kakao.service.dto.WebtoonSearchResponse;
 import org.springframework.stereotype.Service;
@@ -21,4 +29,18 @@ public class WebtoonService {
                 .toList();
         return new WebtoonListResponse(webtoons);
     }
+
+
+    public WebtoonDayListResponse findWebtoonsByDay(final Day day) {
+        validateDay(day);
+        List<WebtoonDayResponse> webtoons = webtoonRepository.findByDay(day).stream()
+                .map(WebtoonDayResponse::of)
+                .toList();
+        return new WebtoonDayListResponse(webtoons);
+    }
+
+    public void validateDay(Day day){
+        if (!EnumSet.allOf(Day.class).contains(day));
+    }
+
 }
