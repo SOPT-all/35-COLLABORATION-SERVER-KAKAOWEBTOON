@@ -7,11 +7,11 @@ public record WebtoonDayResponse(
         String title,
         String image
 ) {
-    public static WebtoonDayResponse of(Webtoon webtoon){
+    public static WebtoonDayResponse of(Webtoon webtoon, String image){
         return new WebtoonDayResponse(
                 webtoon.getId(),
                 webtoon.getTitle(),
-                webtoon.getImage()
+                image
         );
     }
 }
