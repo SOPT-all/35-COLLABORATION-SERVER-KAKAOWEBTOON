@@ -5,7 +5,7 @@ import org.sopt.kakao.domain.Episode;
 
 public record EpisodeResponse(
         int turn,
-        String url,
+        String image,
         String title,
         int status,
         LocalDate date,
