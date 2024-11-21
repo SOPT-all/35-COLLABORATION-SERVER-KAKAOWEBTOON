@@ -31,16 +31,13 @@ public class WebtoonService {
     }
 
 
-    public WebtoonDayListResponse findWebtoonsByDay(final Day day) {
-        validateDay(day);
+    public WebtoonDayListResponse findWebtoonsByDay(final String dayString) {
+        Day day = Day.fromString(dayString);
         List<WebtoonDayResponse> webtoons = webtoonRepository.findByDay(day).stream()
                 .map(WebtoonDayResponse::of)
                 .toList();
         return new WebtoonDayListResponse(webtoons);
     }
 
-    public void validateDay(Day day){
-        if (!EnumSet.allOf(Day.class).contains(day));
-    }
 
 }

@@ -29,7 +29,7 @@ public class WebtoonController {
     }
 
     @GetMapping("/webtoons/day")
-    public ResponseEntity<SuccessResponse> getWebtoonsByDay(@RequestParam final Day day) {
+    public ResponseEntity<SuccessResponse> getWebtoonsByDay(@RequestParam final String day) {
         WebtoonDayListResponse webtoons = webtoonService.findWebtoonsByDay(day);
         return ResponseEntity.ok(SuccessResponse.of(webtoons));
     }
