@@ -36,10 +36,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleGenericException(ConstraintViolationException e) {
         log.warn("ConstraintViolationException occurred: {}", e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
-    }
 
+        String errorMessage = e.getConstraintViolations()
+                .stream()
+                .map(violation -> {
+                    String propertyPath = violation.getPropertyPath().toString();
+                    String fieldName = propertyPath.substring(propertyPath.lastIndexOf(".") + 1);
+                    return fieldName + ": " + violation.getMessage();
+                })
+                .findFirst()
+                .orElse("Pathvariable 예외");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), errorMessage));
+    }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
@@ -55,6 +65,4 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
     }
-
-
 }
