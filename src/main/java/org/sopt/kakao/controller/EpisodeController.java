@@ -5,13 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.sopt.kakao.common.dto.SuccessResponse;
 import org.sopt.kakao.service.EpisodeService;
 import org.sopt.kakao.service.dto.EpisodeDetailResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.sopt.kakao.service.dto.EpisodesResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,5 +27,13 @@ public class EpisodeController {
     ) {
         EpisodeDetailResponse episode = episodeService.getDetail(id);
         return ResponseEntity.ok(SuccessResponse.of(episode));
+    }
+
+    @GetMapping("/episodes/details/{webtoonId}")
+    public ResponseEntity<SuccessResponse> getDetailEpisodeDetail(
+            @PathVariable @Min(value = 1L, message = "ID는 1 이상이어야 합니다.") final long webtoonId)
+    {
+        EpisodesResponse response = episodeService.getEpisodes(webtoonId);
+        return ResponseEntity.ok(SuccessResponse.of(response));
     }
 }

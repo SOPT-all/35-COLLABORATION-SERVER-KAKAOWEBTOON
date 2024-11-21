@@ -38,4 +38,11 @@ public class Episode {
     private boolean isFree;
 
     private int status;
+
+    public int findDayUntilFree(final LocalDate now) {
+        if (now.isBefore(viewDate)) {
+            return (int) java.time.temporal.ChronoUnit.DAYS.between(now, viewDate);
+        }
+        return 0;
+    }
 }
