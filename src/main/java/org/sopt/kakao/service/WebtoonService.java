@@ -13,10 +13,7 @@ import org.sopt.kakao.domain.Thumbnail;
 import org.sopt.kakao.domain.Webtoon;
 import org.sopt.kakao.repository.ThumbnailRepository;
 import org.sopt.kakao.repository.WebtoonRepository;
-import org.sopt.kakao.service.dto.WebtoonDayListResponse;
-import org.sopt.kakao.service.dto.WebtoonDayResponse;
-import org.sopt.kakao.service.dto.WebtoonListResponse;
-import org.sopt.kakao.service.dto.WebtoonSearchResponse;
+import org.sopt.kakao.service.dto.*;
 import org.springframework.stereotype.Service;
 
 import static org.sopt.kakao.common.dto.ErrorMessage.THUMNAIL_NOT_FOUND;
@@ -49,6 +46,20 @@ public class WebtoonService {
     private Optional<Thumbnail> findThumbnail(final Webtoon webtoon) {
         List<Thumbnail> thumbnail = thumbnailRepository.findByWebtoon(webtoon);
         return thumbnail.stream().findFirst();
+    }
+
+    public WebtoonRecentViewListResponse getRecentWebtoons() {
+        List<Webtoon> recentWebtoons = webtoonRepository.findTop5ByOrderByIdDesc();
+        List<WebtoonRecentViewResponse> webtoonResponses = recentWebtoons.stream()
+                .map(webtoon -> WebtoonRecentViewResponse.of(webtoon, findImage(webtoon)))
+                .toList();
+        return new WebtoonRecentViewListResponse(webtoonResponses);
+    }
+
+
+    private Optional<Thumbnail> findImage(final Webtoon webtoon) {
+        List<Thumbnail> thumbnails = thumbnailRepository.findByWebtoon(webtoon);
+        return thumbnails.stream().reduce((first, second) -> second);
     }
 
 }
