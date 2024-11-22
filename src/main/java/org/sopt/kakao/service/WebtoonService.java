@@ -26,11 +26,10 @@ public class WebtoonService {
     public WebtoonListResponse search(final String title) {
         List<Webtoon> findWebtoons = webtoonRepository.findAllByTitle(title);
         List<WebtoonSearchResponse> webtoons = findWebtoons.stream()
-                .map(WebtoonSearchResponse::of)
+                .map(webtoon -> WebtoonSearchResponse.of(webtoon, findImage(webtoon)))
                 .toList();
         return new WebtoonListResponse(webtoons);
     }
-
 
     public WebtoonDayListResponse findWebtoonsByDay(final String dayString) {
         Day day = Day.convertToDay(dayString);
@@ -47,7 +46,6 @@ public class WebtoonService {
                 .toList();
         return new WebtoonRecentViewListResponse(webtoonResponses);
     }
-
 
     private Optional<Thumbnail> findImage(final Webtoon webtoon) {
         List<Thumbnail> thumbnails = thumbnailRepository.findByWebtoon(webtoon);
