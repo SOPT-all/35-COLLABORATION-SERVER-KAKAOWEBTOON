@@ -36,5 +36,4 @@ public class WebtoonController {
         WebtoonRecentViewListResponse recentWebtoons = webtoonService.getRecentWebtoons();
         return ResponseEntity.ok(SuccessResponse.of(recentWebtoons));
     }
-
 }
