@@ -49,9 +49,9 @@ public class WebtoonService {
     }
 
     public WebtoonRecentViewListResponse getRecentWebtoons() {
-        List<Webtoon> recentWebtoons = webtoonRepository.findTop5ByOrderByIdDesc();
+        List<Thumbnail> recentWebtoons = thumbnailRepository.findTop5ByOrderByIdDesc();
         List<WebtoonRecentViewResponse> webtoonResponses = recentWebtoons.stream()
-                .map(webtoon -> WebtoonRecentViewResponse.of(webtoon, findImage(webtoon)))
+                .map(WebtoonRecentViewResponse::of)
                 .toList();
         return new WebtoonRecentViewListResponse(webtoonResponses);
     }

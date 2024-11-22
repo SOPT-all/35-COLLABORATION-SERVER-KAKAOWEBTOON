@@ -13,6 +13,4 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, Long> {
     List<Webtoon> findAllByTitle(String title);
 
     List<Webtoon> findByDay(Day day);
-
-    List<Webtoon> findTop5ByOrderByIdDesc();
 }
