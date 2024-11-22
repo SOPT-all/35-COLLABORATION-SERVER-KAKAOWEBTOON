@@ -14,6 +14,8 @@ import org.sopt.kakao.service.dto.WebtoonListResponse;
 import org.sopt.kakao.service.dto.WebtoonRecentViewListResponse;
 import org.sopt.kakao.service.dto.WebtoonRecentViewResponse;
 import org.sopt.kakao.service.dto.WebtoonSearchResponse;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,9 +42,10 @@ public class WebtoonService {
     }
 
     public WebtoonRecentViewListResponse getRecentWebtoons() {
-        List<Webtoon> recentWebtoons = webtoonRepository.findTop5ByOrderByIdDesc();
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Thumbnail> recentWebtoons = thumbnailRepository.findTop5ByOrderByIdDesc(pageable);
         List<WebtoonRecentViewResponse> webtoonResponses = recentWebtoons.stream()
-                .map(webtoon -> WebtoonRecentViewResponse.of(webtoon, findImage(webtoon)))
+                .map(WebtoonRecentViewResponse::of)
                 .toList();
         return new WebtoonRecentViewListResponse(webtoonResponses);
     }
