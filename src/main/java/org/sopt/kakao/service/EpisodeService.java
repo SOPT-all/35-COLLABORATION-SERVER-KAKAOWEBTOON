@@ -1,12 +1,15 @@
 package org.sopt.kakao.service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.sopt.kakao.common.dto.ErrorMessage;
 import org.sopt.kakao.common.exception.AppException;
 import org.sopt.kakao.domain.Episode;
+import org.sopt.kakao.domain.Thumbnail;
 import org.sopt.kakao.domain.Webtoon;
 import org.sopt.kakao.repository.EpisodeRepository;
+import org.sopt.kakao.repository.ThumbnailRepository;
 import org.sopt.kakao.repository.WebtoonRepository;
 import org.sopt.kakao.service.dto.EpisodeDetailResponse;
 import org.sopt.kakao.service.dto.EpisodeResponse;
@@ -21,10 +24,11 @@ public class EpisodeService {
 
     private final WebtoonRepository webtoonRepository;
     private final EpisodeRepository episodeRepository;
+    private final ThumbnailRepository thumbnailRepository;
 
     public EpisodeDetailResponse getDetail(final long id) {
         Webtoon webtoon = findById(id);
-        return EpisodeDetailResponse.of(webtoon);
+        return EpisodeDetailResponse.of(webtoon, findThumbnail(webtoon));
     }
 
     public EpisodesResponse getEpisodes(final long id) {
@@ -45,5 +49,10 @@ public class EpisodeService {
 
     private List<Episode> findAllEpisode(final Webtoon webtoon) {
         return episodeRepository.findAllByWebtoon(webtoon);
+    }
+
+    private Optional<Thumbnail> findThumbnail(final Webtoon webtoon) {
+        List<Thumbnail> thumbnail = thumbnailRepository.findByWebtoon(webtoon);
+        return thumbnail.stream().findFirst();
     }
 }
